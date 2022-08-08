@@ -1,0 +1,9 @@
+{
+    "name": "edu-backend",
+    "description": "Simple backend server",
+    "repository": "https://github.com/miwashi-edu/edu-backend-js.git",
+    "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
+    "keywords": ["node", "express", "heroku"],
+    "image": "heroku/nodejs"
+  }
+  

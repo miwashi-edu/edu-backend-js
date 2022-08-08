@@ -1,0 +1,27 @@
+{
+  "name": "edu-backend",
+  "version": "1.0.0",
+  "description": "Simple backend server.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miwashi-edu/edu-backend-js.git"
+  },
+  "author": "Mikael Wallin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miwashi-edu/edu-backend-js/issues"
+  },
+  "homepage": "https://github.com/miwashi-edu/edu-backend-js#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "healthcheck": "^0.1.3",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
