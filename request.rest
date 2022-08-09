@@ -1,0 +1,13 @@
+GET http://localhost:3000/secret
+Authorization: Bearer authHeaer
+
+##
+
+POST http://localhost:3000/authenthicate
+Content-Type: application/json
+{
+    "username": "Kyle"
+}
+
+
+GET http://localhost:8080
