@@ -342,12 +342,73 @@ CMD [ "node", "server.js" ]
 ### request.rest
 
 ```
+GET http://localhost:3000/user
+
+###
+
+GET http://localhost:3000/user/anyname1@anydomain.com
+
+###
 POST  http://localhost:3000/user
 Content-Type: application/json
 
 {
-    "usernname": "user",
-    "usernname": "password",
-    "email": "anyname@anydomain.com"
+    "username": "user",
+    "password": "password",
+    "email": "anyname1@anydomain.com"
 }
+
+###
+POST  http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "password",
+    "email": "anyname2@anydomain.com"
+}
+
+###
+POST  http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "password",
+    "email": "anyname3@anydomain.com"
+}
+
+###
+
+POST  http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "password"
+}
+
+###
+
+DELETE http://localhost:3000/user/anyname1@anydomain.com
+
+###
+
+DELETE http://localhost:3000/user/anyname2@anydomain.com
+
+###
+
+DELETE http://localhost:3000/user/anyname3@anydomain.com
+
+###
+
+PUT http://localhost:3000/user/anyname1@anydomain.com
+Content-Type: application/json
+
+{
+    "email": "anyname4@anydomain.com",
+    "username": "newuser",
+    "password": "newpassword"
+}
+
 ```
