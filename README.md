@@ -3,10 +3,10 @@
 ## Create backend project
 
 ``` bash
-cd ~ # Gå till din hemkatalog
-cd ws # Gå till ditt workspace
-mkdir edu-backend # Skapa en projekt mapp
-cd edu-backend 
+cd ~
+cd ws
+mkdir edu-backend
+cd edu-backend
 npm init -y
 mv app.js server.js
 touch .env
@@ -15,7 +15,7 @@ touch Procfile
 touch Dockerfile
 touch request.rest
 mkdir routes
-touch routes/healthcheck.js
+touch routes/healthcheck.js 
 touch routes/user.js
 mkdir __tests__
 touch ./__tests__/component.js
