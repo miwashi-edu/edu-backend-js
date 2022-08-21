@@ -3,10 +3,10 @@
 ## Create backend project
 
 ``` bash
-cd ~
-cd ws
-mkdir edu-backend
-cd edu-backend
+cd ~ # Gå till din hemkatalog
+cd ws # Gå till ditt workspace
+mkdir edu-backend # Skapa en projekt mapp
+cd edu-backend 
 npm init -y
 mv app.js server.js
 touch .env
@@ -35,7 +35,26 @@ code .
 
 ### server.js
 ```js
+require('dotenv').config()
+const express = require('express')
+const healthcheck = require('healthcheck')
 
+const PORT = process.env.PORT || 3000
+
+const app = express()
+app.use(express.json())
+app.use('/health', require('./routes/healthcheck.js'));
+app.use('/user', require('./routes/user.js'));
+
+app.get("/", (req ,res) => {
+   headers={"cache-control":  "no-cache"}
+   body={"status": "available"}
+   res.status(200).json(body)
+})
+
+app.listen(PORT , ()=>{
+   console.log(`STARTED LISTENING ON PORT ${PORT}`)
+});
 ```
 
 ### calculator.js
@@ -93,19 +112,189 @@ exports.add = add;
 ## Routes
 ### ./routes/healtcheck.js
 ```js
+const express = require("express")
+
+const router = express.Router({});
+router.get('/', async (_req, res, _next) => {
+	
+	const healthcheck = {
+		uptime: process.uptime(),
+		message: 'OK',
+		timestamp: Date.now()
+	};
+	try {
+		res.send(healthcheck);
+	} catch (e) {
+		healthcheck.message = e;
+		res.status(503).send();
+	}
+});
+
+module.exports = router;
 ```
 
 ### ./routes/user.js
 ```js
+const uuid = require('uuid');
+const express = require("express")
+
+let users = {}
+const router = express.Router({})
+
+//Create
+router.post('/', async (req, res, next) => {
+	if(!req.body.hasOwnProperty('email')){
+		res.statusCode = 400
+		res.send('User email is mandatory!')
+		return
+	}
+
+	if(!req.body.hasOwnProperty('password')){
+		res.statusCode = 400
+		res.send('User password is mandatory!')
+		return
+	}
+
+	if(!req.body.hasOwnProperty('username')){
+		res.statusCode = 400
+		res.send('Username is mandatory!')
+		return
+	}
+
+	const id = req.body.email
+	if( users[id]!== undefined){
+		res.statusCode = 400
+		res.send('User already exist, use PUT for update!')
+		return
+	}
+
+	users[id] = {
+			id: req.body.email,
+			user: req.body.username,
+			email: req.body.email,
+			password: req.body.password
+		}
+
+	res.send(users)
+});
+
+//Read
+router.get('/', async (req, res, next) => {
+	const result = []
+	for (const [key, user] of Object.entries(users)) {
+		result.push(user.email)
+	}
+	res.send(result)
+});
+
+router.get('/:id', async (req, res, next) => {
+	if(req.params.id == undefined){
+		res.statusCode = 400
+		res.send('User email is mandatory!')
+		return
+	}
+	
+	if( users[req.params.id]== undefined){
+		res.statusCode = 400;
+		res.send('User not found!')
+		return
+	}
+
+	const user = {
+		username: users[req.params.id].user,
+		email: users[req.params.id].email
+	}
+	res.send(user)
+});
+
+//Update
+router.put('/:id', async (req, res, next) => {
+	if( users[req.params.id]== undefined){
+		res.statusCode = 400;
+		res.send('User not found!')
+		return
+	}
+	let user = users[req.params.id]
+
+	if(req.body.hasOwnProperty('email')){
+		user.email = req.body.email
+	}
+
+	if(req.body.hasOwnProperty('username')){
+		user.user = req.body.username
+	}
+
+	if(req.body.hasOwnProperty('password')){
+		user.password = req.body.password
+	}
+
+	res.send()
+});
+
+//Delete
+router.delete('/:id', async (req, res, next) => {
+	if(req.params.id == undefined){
+		res.statusCode = 400
+		res.send('User email is mandatory!')
+		return
+	}
+	
+	if( users[req.params.id]!== undefined){
+		users.delete[req.params.id]
+	}
+	res.send({status: "ok"})
+});
+
+module.exports = router;
 ```
 ## Tests
 
 ### ./__tests__/unit.js
 ```js
+/**
+ * @group unit
+ */
+
+ const calculator = require('../calculator.js')
+
+ test ('Calculator should add!', () =>{
+     expect(calculator.add('1')).toBe(1)
+ })
 ```
 ### ./__tests__/component.js
 ```js
+/**
+ * @group component
+ */
+
+ const calculator = require('../calculator.js')
+
+ test ('Calculator should add!', () => {
+     expect(calculator.add('1, 1')).toBe(2)
+ })
+
+ test ('Calculator should add!', () => {
+    expect(calculator.add('2, 3')).toBe(5)
+})
 ```
+
+### -/__tests__/integration.js
+```js
+/**
+ * @group integration
+ */
+
+ const calculator = require('../calculator.js')
+
+ test ('Calculator should add!', () => {
+     expect(calculator.add('1, 1')).toBe(2)
+ })
+
+ test ('Calculator should add!', () => {
+    expect(calculator.add('2, 3')).toBe(5)
+})
+```
+
 ## Heroku
 
 ### Procfile
