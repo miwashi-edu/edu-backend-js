@@ -1,33 +1,28 @@
-const uuid = require('uuid');
 const express = require("express")
+const router = express.Router({})
 
 let users = {}
-const router = express.Router({})
 
 //Create
 router.post('/', async (req, res, next) => {
 	if(!req.body.hasOwnProperty('email')){
-		res.statusCode = 400
-		res.send('User email is mandatory!')
+		res.status(400).send('User email is mandatory!')
 		return
 	}
 
 	if(!req.body.hasOwnProperty('password')){
-		res.statusCode = 400
-		res.send('User password is mandatory!')
+		res.status(400).send('User password is mandatory!')
 		return
 	}
 
 	if(!req.body.hasOwnProperty('username')){
-		res.statusCode = 400
-		res.send('Username is mandatory!')
+		res.status(400).send('Username is mandatory!')
 		return
 	}
 
 	const id = req.body.email
 	if( users[id]!== undefined){
-		res.statusCode = 400
-		res.send('User already exist, use PUT for update!')
+		res.status(400).send('User already exist, use PUT for update!')
 		return
 	}
 
@@ -38,7 +33,7 @@ router.post('/', async (req, res, next) => {
 			password: req.body.password
 		}
 
-	res.send(users)
+	res.status(200).send(users)
 });
 
 //Read
@@ -47,19 +42,17 @@ router.get('/', async (req, res, next) => {
 	for (const [key, user] of Object.entries(users)) {
 		result.push(user.email)
 	}
-	res.send(result)
+	res.status(200).send(result)
 });
 
 router.get('/:id', async (req, res, next) => {
 	if(req.params.id == undefined){
-		res.statusCode = 400
-		res.send('User email is mandatory!')
+		res.status(404).send('User email is mandatory!')
 		return
 	}
 	
 	if( users[req.params.id]== undefined){
-		res.statusCode = 400;
-		res.send('User not found!')
+		res.status(404).send('User not found!')
 		return
 	}
 
@@ -67,14 +60,13 @@ router.get('/:id', async (req, res, next) => {
 		username: users[req.params.id].user,
 		email: users[req.params.id].email
 	}
-	res.send(user)
+	res.status(200).send(user)
 });
 
 //Update
 router.put('/:id', async (req, res, next) => {
 	if( users[req.params.id]== undefined){
-		res.statusCode = 400;
-		res.send('User not found!')
+		res.status(404).send('User not found!')
 		return
 	}
 	let user = users[req.params.id]
@@ -91,21 +83,20 @@ router.put('/:id', async (req, res, next) => {
 		user.password = req.body.password
 	}
 
-	res.send()
+	res.status(200).send()
 });
 
 //Delete
 router.delete('/:id', async (req, res, next) => {
 	if(req.params.id == undefined){
-		res.statusCode = 400
-		res.send('User email is mandatory!')
+		res.status(400).send('User email is mandatory!')
 		return
 	}
 	
 	if( users[req.params.id]!== undefined){
 		users.delete[req.params.id]
 	}
-	res.send({status: "ok"})
+	res.status(200).send({status: "ok"})
 });
 
 module.exports = router;

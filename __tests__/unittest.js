@@ -2,8 +2,10 @@
  * @group unit
  */
 
- const calculator = require('../calculator.js')
+process.env.NODE_ENV = 'test'
 
- test ('Calculator should add!', () =>{
-     expect(calculator.add('1')).toBe(1)
- })
+const calculator = require('../calculator.js')
+
+test ('Calculator should add!', () =>{
+    expect(calculator.add('1')).toBe(1)
+})

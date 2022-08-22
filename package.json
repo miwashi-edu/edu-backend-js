@@ -33,6 +33,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "jest": "^28.1.3",
     "jest-runner-groups": "^2.2.0",
     "nodemon": "^2.0.19"

@@ -1,13 +1,25 @@
 /**
  * @group integration
  */
+process.env.NODE_ENV = 'test'
 
- const calculator = require('../calculator.js')
+const { expect } = require('chai');
+const chai = require('chai')
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
 
- test ('Calculator should add!', () => {
-     expect(calculator.add('1, 1')).toBe(2)
- })
+process.env.NODE_ENV = 'test'
+const BACKEND_HOST = process.env.BACKEND_HOST || "http://localhost:3000"
 
- test ('Calculator should add!', () => {
-    expect(calculator.add('2, 3')).toBe(5)
+describe('/GET user', () => {
+    it('it should GET all the users', (done) => {
+        chai.request(BACKEND_HOST)
+          .get('/user')
+          .end((err, res) => {
+            expect(res).to.have.status(200)
+            expect(res.body).to.not.be.null
+            expect(res.body).to.be.an('array')
+            done()
+          })
+    })
 })
