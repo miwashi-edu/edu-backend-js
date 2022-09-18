@@ -28,6 +28,10 @@ npm install jsonwebtoken --save
 npm install nodemon --save-dev
 npm install jest --save-dev
 npm install jest-runner-groups --save-dev
+npm pkg set scripts.dev="nodemon server.js" #Inget mellanslag runt =
+npm pkg set scripts.test="jest  --group=-component --group=-integration"
+npm pkg set scripts.componenttest="jest  --group=component"
+npm pkg set scripts.integrationtest="jest  --group=integration"
 code .
 ```
 
