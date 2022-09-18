@@ -8,7 +8,7 @@ cd ws
 mkdir edu-backend
 cd edu-backend
 npm init -y
-mv app.js server.js
+touch server.js
 touch .env
 touch app.json
 touch Procfile
@@ -29,6 +29,7 @@ npm install nodemon --save-dev
 npm install jest --save-dev
 npm install jest-runner-groups --save-dev
 #Inget mellanslag runt =, för då funkar inte set commandot
+npm pkg set main="server.js"
 npm pkg set scripts.dev="nodemon server.js" 
 npm pkg set scripts.test="jest  --group=-component --group=-integration"
 npm pkg set scripts.componenttest="jest  --group=component"
